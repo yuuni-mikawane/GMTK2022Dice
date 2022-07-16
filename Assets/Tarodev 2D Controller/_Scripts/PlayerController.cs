@@ -19,6 +19,9 @@ namespace TarodevController {
         public bool LandingThisFrame { get; private set; }
         public Vector3 RawMovement { get; private set; }
         public bool Grounded => _colDown;
+        public SpriteRenderer sprite;
+
+        private Animator animator;
 
         private Vector3 _lastPosition;
         private float _currentHorizontalSpeed, _currentVerticalSpeed;
@@ -31,6 +34,7 @@ namespace TarodevController {
         private void Start()
         {
             playerStats = PlayerStats.Instance;
+            animator = GetComponent<Animator>();
         }
 
         private void Update() {
@@ -40,6 +44,7 @@ namespace TarodevController {
             _lastPosition = transform.position;
 
             RollingInputCheck();
+            AnimStateCheck();
 
             GatherInput();
             RunCollisionChecks();
@@ -50,6 +55,29 @@ namespace TarodevController {
             CalculateJump(); // Possibly overrides vertical
 
             MoveCharacter(); // Actually perform the axis movement
+        }
+
+        private void AnimStateCheck()
+        {
+            if (!isRolling)
+            {
+                if (_currentHorizontalSpeed > 0)
+                {
+                    sprite.flipX = true;
+                    //animator.SetBool("isIdle", false);
+                    animator.SetBool("isIdle", true);
+                }
+                else if (_currentHorizontalSpeed < 0)
+                {
+                    sprite.flipX = false;
+                    //animator.SetBool("isIdle", false);
+                    animator.SetBool("isIdle", true);
+                }
+                else
+                {
+                    animator.SetBool("isIdle", true);
+                }
+            }
         }
 
 
@@ -79,9 +107,14 @@ namespace TarodevController {
         {
             isRolling = true;
             playerStats.Roll();
+            //rolling anim
+            animator.SetTrigger("rollTrigger");
+            animator.SetBool("isIdle", false);
+            sprite.color = new Color(0, 149, 255);
             float originalMoveClamp = _moveClamp;
             _moveClamp = rollSpeed;
             yield return new WaitForSeconds(waitTime);
+            sprite.color = new Color(255, 255, 255);
             nextRollTime = Time.time + rollCooldown;
             isRolling = false;
             _moveClamp = originalMoveClamp;

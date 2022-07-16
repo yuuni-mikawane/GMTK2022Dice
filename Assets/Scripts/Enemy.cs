@@ -17,9 +17,12 @@ public class Enemy : MonoBehaviour
     private float lastAttackTime;
     private float nextAttackTime;
 
+    private GameController gameController;
+
     // Start is called before the first frame update
     void Start()
     {
+        gameController = GameController.Instance;
         player = PlayerStats.Instance;
         lastAttackTime = Time.time;
         nextAttackTime = lastAttackTime + 1f/firerate;
@@ -49,6 +52,7 @@ public class Enemy : MonoBehaviour
         if (hp <= 0)
         {
             dieFX.Spawn(transform.position);
+            gameController.ActivateKillCam();
             gameObject.Recycle();
         }
     }

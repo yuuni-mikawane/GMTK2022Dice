@@ -1,43 +1,28 @@
-public enum EnemyIngameAttribute
+public enum IngameAttribute
 {
-    EnemySpeed,
     EnemyFireRate,
-    EnemyBulletBounce,
     EnemyJumpStrength,
     EnemyBulletSpeed,
     EnemyDamage,
-}
-
-public enum PlayerIngameAttribute
-{
     PlayerSpeed,
-    PlayerFireRate,
-    PlayerBulletBounce,
-    PlayerJumpStrength,
-    PlayerBulletSpeed,
     PlayerDamage,
-}
-
-public enum LaserIngameAttribute
-{
     LaserSpawnRate,
     LaserSpeed,
     LaserDamage,
 }
 
-public enum EnemyStartAttribute
+public enum StartAttribute
 {
     EnemyCount,
-    EnemyType,
-    EnemySize,
+    MaxHP,
 }
 
-public enum RoomStartAttribute
-{
-    HPCount,
-    HPSpawnRate,
-    HPValue,
-}
+//public enum RoomStartAttribute
+//{
+//    HPCount,
+//    HPSpawnRate,
+//    HPValue,
+//}
 
 public enum LayerIngame
 {

@@ -13,4 +13,9 @@ public class AttributeManager : SingletonBind<AttributeManager>
         playerStats = PlayerStats.Instance;
         enemyManager = EnemyManager.Instance;
     }
+
+    public void UpdateCurrentAttributes(int diceValue)
+    {
+
+    }
 }

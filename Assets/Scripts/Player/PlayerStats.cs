@@ -11,10 +11,14 @@ public class PlayerStats : SingletonBind<PlayerStats>
     public float damage = 1;
     public int currentDiceValue;
 
+    public SpriteRenderer sprite;
+    private Animator animator;
+
     private void Start()
     {
         hp = maxHp;
         currentDiceValue = Random.Range(1, 7);
+        animator = GetComponent<Animator>();
     }
 
     public void TakeDamage(float amount)
@@ -34,5 +38,6 @@ public class PlayerStats : SingletonBind<PlayerStats>
     {
         currentDiceValue = Random.Range(1, 7);
         //animation
+        animator.SetInteger("diceValue", currentDiceValue);
     }
 }
