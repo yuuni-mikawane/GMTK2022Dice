@@ -13,12 +13,14 @@ public class PlayerStats : SingletonBind<PlayerStats>
 
     public SpriteRenderer sprite;
     private Animator animator;
+    private GameController gameController;
 
     private void Start()
     {
         hp = maxHp;
         currentDiceValue = Random.Range(1, 7);
         animator = GetComponent<Animator>();
+        gameController = GameController.Instance;
     }
 
     public void TakeDamage(float amount)
@@ -39,5 +41,9 @@ public class PlayerStats : SingletonBind<PlayerStats>
         currentDiceValue = Random.Range(1, 7);
         //animation
         animator.SetInteger("diceValue", currentDiceValue);
+        if (gameController.currentState == GameState.SettingUp)
+        {
+            gameController.SetUpRoom(currentDiceValue);
+        }
     }
 }

@@ -72,7 +72,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.5222738, b: 0.4943396, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 4647128453176528622}
   - component: {fileID: 4647128453176528623}
   m_Layer: 6
-  m_Name: Enemy
+  m_Name: red enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -134,8 +134,8 @@ MonoBehaviour:
   bulletSpeed: 5
   bulletDamage: 1
   attackPos: {fileID: 4647128453383897869}
-  bullet: {fileID: 2796123632002233898, guid: 8e967b7d5dc2a8347a78e3845610eecc, type: 3}
-  dieFX: {fileID: 8267556942094579695, guid: 8a7b7f13d6f323e4eb5aea7b0e244941, type: 3}
+  bullet: {fileID: 2796123632002233898, guid: 41b57694c8412f740a87a47c3e8ba4dc, type: 3}
+  dieFX: {fileID: 6587070090975095721, guid: de454de70ff78bd43922adea6db77858, type: 3}
 --- !u!50 &4647128453176528622
 Rigidbody2D:
   serializedVersion: 4

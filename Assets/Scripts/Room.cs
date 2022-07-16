@@ -5,6 +5,11 @@ using UnityEngine;
 public class Room : MonoBehaviour
 {
     public List<Vector2> spawnPoints;
+    public List<IngameAttribute> possibleIngameAttributes;
+    public List<StartAttribute> possibleStartAttributes;
+
+    public int ingameAttributeCount;
+    public int startAttributeCount;
 
     public Vector2 GetRandomSpawnPoint()
     {
