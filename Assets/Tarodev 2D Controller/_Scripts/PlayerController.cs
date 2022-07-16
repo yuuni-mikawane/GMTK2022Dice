@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -26,12 +27,19 @@ namespace TarodevController {
         private bool _active;
         void Awake() => Invoke(nameof(Activate), 0.5f);
         void Activate() =>  _active = true;
-        
+
+        private void Start()
+        {
+            playerStats = PlayerStats.Instance;
+        }
+
         private void Update() {
             if(!_active) return;
             // Calculate velocity
             Velocity = (transform.position - _lastPosition) / Time.deltaTime;
             _lastPosition = transform.position;
+
+            RollingInputCheck();
 
             GatherInput();
             RunCollisionChecks();
@@ -44,6 +52,42 @@ namespace TarodevController {
             MoveCharacter(); // Actually perform the axis movement
         }
 
+
+        #region Rolling Input
+
+        [Header("ROLLING")]
+        [SerializeField] private float rollDuration;
+        [SerializeField] private float rollCooldown;
+        [SerializeField] private float rollSpeed;
+        private float nextRollTime;
+        private bool isRolling = false;
+        private PlayerStats playerStats;
+
+        private void RollingInputCheck()
+        {
+            playerStats.isRolling = isRolling;
+            if (!isRolling && Time.time >= nextRollTime)
+            {
+                if (UnityEngine.Input.GetKey(KeyCode.R) || UnityEngine.Input.GetKey(KeyCode.LeftShift))
+                {
+                    StartCoroutine(WaitForRolling(rollDuration));
+                }
+            }
+        }
+
+        private IEnumerator WaitForRolling(float waitTime)
+        {
+            isRolling = true;
+            playerStats.Roll();
+            float originalMoveClamp = _moveClamp;
+            _moveClamp = rollSpeed;
+            yield return new WaitForSeconds(waitTime);
+            nextRollTime = Time.time + rollCooldown;
+            isRolling = false;
+            _moveClamp = originalMoveClamp;
+        }
+
+        #endregion
 
         #region Gather Input
 
@@ -142,7 +186,6 @@ namespace TarodevController {
         }
 
         #endregion
-
 
         #region Walk
 

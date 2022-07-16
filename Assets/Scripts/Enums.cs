@@ -38,3 +38,8 @@ public enum RoomStartAttribute
     HPSpawnRate,
     HPValue,
 }
+
+public enum LayerIngame
+{
+    Enemy = 6,
+}
