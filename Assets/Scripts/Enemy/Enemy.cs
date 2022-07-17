@@ -11,6 +11,8 @@ public class Enemy : MonoBehaviour
     public float firerate = 1; //atks per 2 second
     public float bulletSpeed = 2;
     public float bulletDamage = 1;
+    public float minMoveSpd;
+    public float maxMoveSpd;
     public GameObject attackPos;
     public GameObject bullet;
     public GameObject dieFX;

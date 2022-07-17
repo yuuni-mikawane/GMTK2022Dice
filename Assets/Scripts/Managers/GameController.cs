@@ -17,6 +17,7 @@ public class GameController : SingletonBind<GameController>
     //private RoomManager roomManager;
     private EnemyManager enemyManager;
     public GameObject tutorialObj;
+    public GameObject audioPanel;
 
     [Header("Scoring")]
     public int score;
@@ -61,6 +62,7 @@ public class GameController : SingletonBind<GameController>
     {
         currentState = previousState;
         HideTutorial();
+        HideAudioSettings();
         Time.timeScale = 1f;
         pauseMenu.SetActive(false);
     }
@@ -68,6 +70,7 @@ public class GameController : SingletonBind<GameController>
     {
         previousState = currentState;
         HideTutorial();
+        HideAudioSettings();
         currentState = GameState.Pause;
         Time.timeScale = 0;
         pauseMenu.SetActive(true);
@@ -77,6 +80,16 @@ public class GameController : SingletonBind<GameController>
     {
         //reload scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void ShowAudioSettings()
+    {
+        audioPanel.SetActive(true);
+    }
+
+    public void HideAudioSettings()
+    {
+        audioPanel.SetActive(false);
     }
 
     public void ShowTutorial()

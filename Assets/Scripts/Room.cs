@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    public List<Transform> spawnPoints;
-    public GameObject block;
+    public List<SpawnArea> spawnPoints;
 
     public Vector2 GetRandomSpawnPoint()
     {
-        return spawnPoints[Random.Range(0, spawnPoints.Count)].position;
+        SpawnArea spawnArea = spawnPoints[Random.Range(0, spawnPoints.Count)];
+        Vector2 spawnPoint = (Vector2)spawnArea.transform.position + 
+            new Vector2(Random.Range(-(spawnArea.widthHeight.x / 2), spawnArea.widthHeight.x / 2),
+                        Random.Range(-(spawnArea.widthHeight.y / 2), spawnArea.widthHeight.y / 2));
+        return spawnPoint;
     }
 }
