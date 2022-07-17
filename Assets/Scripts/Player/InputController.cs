@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InputController : MonoBehaviour
 {
@@ -8,11 +9,13 @@ public class InputController : MonoBehaviour
     public float deacceleration;
     private Rigidbody2D rb;
     private Vector2 movement;
+    private GameController gameController;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        gameController = GameController.Instance;
     }
 
     // Update is called once per frame
@@ -21,6 +24,8 @@ public class InputController : MonoBehaviour
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
         movement = Vector2.ClampMagnitude(movement, speed);
+
+        
     }
 
     private void FixedUpdate()

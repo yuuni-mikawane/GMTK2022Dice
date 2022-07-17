@@ -5,34 +5,98 @@ using GameCommon;
 
 public class EnemyManager : SingletonBind<EnemyManager>
 {
-    public GameObject enemyPrefab;
-    private List<Enemy> enemies;
+    public GameObject[] enemyPrefabs;
+    public float enemySpawnRate; //number of enemies every 10 seconds
+    public float spawnRateIncreaseMultiplier;
+    public List<Enemy> enemies;
+    public List<EnemyBullet> bullets;
+    public float fireRateIncreaseMultiplier;
+    public float bulletSpeedIncreaseMultiplier;
+    private float fireRate;
+    private float bulletSpeed;
+    private float nextSpawnTime;
+    private bool firstSpawn = true;
 
-    private RoomManager roomManager;
+    //private RoomManager roomManager;
+    private GameController gameController;
 
     private void Start()
     {
-        roomManager = RoomManager.Instance;
+        //roomManager = RoomManager.Instance;
+        gameController = GameController.Instance;
+        fireRate = enemyPrefabs[0].GetComponent<Enemy>().firerate;
+        bulletSpeed = enemyPrefabs[0].GetComponent<Enemy>().bulletSpeed;
     }
 
-    public void KillAllEnemies()
+    private void Update()
     {
-        foreach (Enemy enemy in enemies)
+        if (gameController.currentState == GameState.Playing && Time.time > nextSpawnTime)
         {
-            if (enemy != null)
+            if (firstSpawn)
             {
-                enemy.Recycle();
+                nextSpawnTime = Time.time + 3f;
+                firstSpawn = false;
+            }
+            else
+            {
+                nextSpawnTime = Time.time + 10f / enemySpawnRate;
+                SpawnEnemies();
             }
         }
-        enemies.Clear();
     }
 
-    public void SpawnEnemies(int amount)
+    public void KillAllBullets()
     {
-        for(int i = 0; i < amount; i++)
+        //foreach (GameObject enemy in enemies)
+        //{
+        //    if (enemy != null)
+        //    {
+        //        enemy.Recycle();
+        //    }
+        //}
+        //enemies.Clear();
+
+        foreach (EnemyBullet bullet in bullets)
         {
-            Vector2 spawnPos = roomManager.currentRoom.GetRandomSpawnPoint();
-            enemyPrefab.Spawn(spawnPos);
+            if (bullet != null)
+            {
+                bullet.SelfDestruct();
+                bullet.Recycle();
+            }
         }
+        bullets.Clear();
+    }
+
+    //public void CheckRoomClear()
+    //{
+    //    if (enemies.Count == 0)
+    //    {
+    //        KillAllBullets();
+    //        gameController.RoomCleared();
+    //    }
+    //}
+
+    public void AddFireRate(float amount)
+    {
+        fireRate += amount * fireRateIncreaseMultiplier;
+    }
+
+    public void AddBulletSpeed(float amount)
+    {
+        bulletSpeed += amount * bulletSpeedIncreaseMultiplier;
+    }
+
+    public void AddSpawnRate(float amount)
+    {
+        enemySpawnRate += spawnRateIncreaseMultiplier * amount;
+    }
+
+    public void SpawnEnemies()
+    {
+        Vector2 spawnPos = gameController.chosenRoom.GetRandomSpawnPoint();
+        Enemy spawnedEnemy = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)].Spawn(gameObject.transform, spawnPos).GetComponent<Enemy>();
+        spawnedEnemy.firerate = fireRate;
+        spawnedEnemy.bulletSpeed = bulletSpeed;
+        enemies.Add(spawnedEnemy);
     }
 }

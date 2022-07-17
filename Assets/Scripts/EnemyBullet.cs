@@ -33,6 +33,12 @@ public class EnemyBullet : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void SelfDestruct()
+    {
+        particles.Spawn(transform.position);
+        Destroy(gameObject);
+    }
+
     public void InitializeBullet(float dmg, float spd, Vector2 dir)
     {
         damage = dmg;

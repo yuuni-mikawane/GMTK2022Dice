@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GameCommon;
+using UnityEngine.SceneManagement;
+using TMPro;
 
 public class PlayerStats : SingletonBind<PlayerStats>
 {
@@ -11,9 +13,10 @@ public class PlayerStats : SingletonBind<PlayerStats>
     public float damage = 1;
     public int currentDiceValue;
 
-    public SpriteRenderer sprite;
+    public TMP_Text hpText;
     private Animator animator;
     private GameController gameController;
+    private AttributeManager attributeManager;
 
     private void Start()
     {
@@ -21,6 +24,29 @@ public class PlayerStats : SingletonBind<PlayerStats>
         currentDiceValue = Random.Range(1, 7);
         animator = GetComponent<Animator>();
         gameController = GameController.Instance;
+        attributeManager = AttributeManager.Instance;
+    }
+
+    private void Update()
+    {
+        if (gameController.currentState == GameState.GameOver)
+        {
+            if (Input.GetKey(KeyCode.Return))
+            {
+                //reload scene
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+        }
+
+        if (gameController.currentState == GameState.Playing)
+        {
+            hpText.text = "HP " + ((int)hp).ToString();
+            hpText.gameObject.SetActive(true);
+        }
+        else
+        {
+            hpText.gameObject.SetActive(false);
+        }
     }
 
     public void TakeDamage(float amount)
@@ -32,11 +58,12 @@ public class PlayerStats : SingletonBind<PlayerStats>
             {
                 hp = 0;
                 //die
+                gameController.GameOver();
             }
         }
     }
 
-    public void Roll()
+    public void RollDiceValue()
     {
         currentDiceValue = Random.Range(1, 7);
         //animation
@@ -44,6 +71,10 @@ public class PlayerStats : SingletonBind<PlayerStats>
         if (gameController.currentState == GameState.SettingUp)
         {
             gameController.SetUpRoom(currentDiceValue);
+        }
+        else if (gameController.currentState == GameState.Playing)
+        {
+            attributeManager.UpdateCurrentAttributes(currentDiceValue);
         }
     }
 }

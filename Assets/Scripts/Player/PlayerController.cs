@@ -20,6 +20,8 @@ namespace TarodevController {
         public Vector3 RawMovement { get; private set; }
         public bool Grounded => _colDown;
         public SpriteRenderer sprite;
+        public GameObject killHitbox;
+        private GameController gameController;
 
         private Animator animator;
 
@@ -35,26 +37,30 @@ namespace TarodevController {
         {
             playerStats = PlayerStats.Instance;
             animator = GetComponent<Animator>();
+            gameController = GameController.Instance;
         }
 
         private void Update() {
-            if(!_active) return;
-            // Calculate velocity
-            Velocity = (transform.position - _lastPosition) / Time.deltaTime;
-            _lastPosition = transform.position;
+            if (gameController.currentState != GameState.GameOver)
+            {
+                if(!_active) return;
+                // Calculate velocity
+                Velocity = (transform.position - _lastPosition) / Time.deltaTime;
+                _lastPosition = transform.position;
 
-            RollingInputCheck();
-            AnimStateCheck();
+                RollingInputCheck();
+                AnimStateCheck();
 
-            GatherInput();
-            RunCollisionChecks();
+                GatherInput();
+                RunCollisionChecks();
 
-            CalculateWalk(); // Horizontal movement
-            CalculateJumpApex(); // Affects fall speed, so calculate before gravity
-            CalculateGravity(); // Vertical movement
-            CalculateJump(); // Possibly overrides vertical
+                CalculateWalk(); // Horizontal movement
+                CalculateJumpApex(); // Affects fall speed, so calculate before gravity
+                CalculateGravity(); // Vertical movement
+                CalculateJump(); // Possibly overrides vertical
 
-            MoveCharacter(); // Actually perform the axis movement
+                MoveCharacter(); // Actually perform the axis movement
+            }
         }
 
         private void AnimStateCheck()
@@ -94,6 +100,7 @@ namespace TarodevController {
         private void RollingInputCheck()
         {
             playerStats.isRolling = isRolling;
+            killHitbox.SetActive(isRolling);
             if (!isRolling && Time.time >= nextRollTime)
             {
                 if (UnityEngine.Input.GetKey(KeyCode.R) || UnityEngine.Input.GetKey(KeyCode.LeftShift))
@@ -106,7 +113,7 @@ namespace TarodevController {
         private IEnumerator WaitForRolling(float waitTime)
         {
             isRolling = true;
-            playerStats.Roll();
+            playerStats.RollDiceValue();
             //rolling anim
             animator.SetTrigger("rollTrigger");
             animator.SetBool("isIdle", false);

@@ -1,28 +1,11 @@
 public enum IngameAttribute
 {
     EnemyFireRate,
-    EnemyJumpStrength,
+    EnemySpawnRate,
     EnemyBulletSpeed,
-    EnemyDamage,
-    PlayerSpeed,
-    PlayerDamage,
-    LaserSpawnRate,
-    LaserSpeed,
-    LaserDamage,
+    PlayerHeal,
+    AmountOfEvents,
 }
-
-public enum StartAttribute
-{
-    EnemyCount,
-    MaxHP,
-}
-
-//public enum RoomStartAttribute
-//{
-//    HPCount,
-//    HPSpawnRate,
-//    HPValue,
-//}
 
 public enum LayerIngame
 {
@@ -35,4 +18,5 @@ public enum GameState
     Playing,
     SettingUp,
     GameOver,
+    GameCompleted,
 }

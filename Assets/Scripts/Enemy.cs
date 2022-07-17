@@ -6,7 +6,7 @@ using GameCommon;
 public class Enemy : MonoBehaviour
 {
     public float hp = 1;
-    public float firerate = 1; //atks per second
+    public float firerate = 1; //atks per 2 second
     public float bulletSpeed = 2;
     public float bulletDamage = 1;
     public GameObject attackPos;
@@ -18,20 +18,22 @@ public class Enemy : MonoBehaviour
     private float nextAttackTime;
 
     private GameController gameController;
+    private EnemyManager enemyManager;
 
     // Start is called before the first frame update
     void Start()
     {
         gameController = GameController.Instance;
         player = PlayerStats.Instance;
+        enemyManager = EnemyManager.Instance;
         lastAttackTime = Time.time;
-        nextAttackTime = lastAttackTime + 1f/firerate;
+        nextAttackTime = lastAttackTime + 2f/firerate;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Time.time >= nextAttackTime)
+        if (gameController.currentState == GameState.Playing && Time.time >= nextAttackTime)
         {
             lastAttackTime = Time.time;
             nextAttackTime = lastAttackTime + 2f / firerate;
@@ -44,6 +46,7 @@ public class Enemy : MonoBehaviour
         Vector2 dir = player.transform.position - attackPos.transform.position;
         EnemyBullet shotBullet = bullet.Spawn(attackPos.transform.position).GetComponent<EnemyBullet>();
         shotBullet.InitializeBullet(bulletDamage, bulletSpeed, dir);
+        enemyManager.bullets.Add(shotBullet);
     }
 
     public void TakeDamage(float amount)
@@ -53,6 +56,8 @@ public class Enemy : MonoBehaviour
         {
             dieFX.Spawn(transform.position);
             gameController.ActivateKillCam();
+            gameController.score++;
+            enemyManager.enemies.Remove(this);
             gameObject.Recycle();
         }
     }
