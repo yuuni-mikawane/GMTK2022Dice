@@ -68,12 +68,12 @@ public class AttributeManager : SingletonBind<AttributeManager>
         if (currentDiceValue == 0)
         {
             diceValueText.color = Color.white;
-            diceValueText.text = "YOU ROLLED ?";
+            diceValueText.text = "BY...?";
         }
         else
         {
             diceValueText.color = Color.green;
-            diceValueText.text = "YOU ROLLED " + currentDiceValue;
+            diceValueText.text = "BY " + currentDiceValue;
         }
 
         switch (nextEventID)

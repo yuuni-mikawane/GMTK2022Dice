@@ -43,7 +43,7 @@ namespace TarodevController {
         }
 
         private void Update() {
-            if (gameController.currentState != GameState.GameOver)
+            if (gameController.currentState != GameState.GameOver && gameController.currentState != GameState.Pause)
             {
                 if(!_active) return;
                 // Calculate velocity

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameCommon;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameController : SingletonBind<GameController>
 {
@@ -15,7 +16,7 @@ public class GameController : SingletonBind<GameController>
 
     //private RoomManager roomManager;
     private EnemyManager enemyManager;
-    private AttributeManager attributeManager;
+    public GameObject tutorialObj;
 
     [Header("Scoring")]
     public int score;
@@ -28,13 +29,17 @@ public class GameController : SingletonBind<GameController>
     public TMP_Text scoreValueText;
     public TMP_Text timeValueText;
 
+    [Header("UI objs")]
+    public GameObject pauseMenu;
+
+    private GameState previousState;
+
     private void Start()
     {
         Time.timeScale = 1f;
         currentState = GameState.SettingUp;
         //roomManager = RoomManager.Instance;
         enemyManager = EnemyManager.Instance;
-        attributeManager = AttributeManager.Instance;
     }
 
     private void Update()
@@ -43,13 +48,51 @@ public class GameController : SingletonBind<GameController>
         {
             if (currentState == GameState.Pause)
             {
-                
+                UnPause();
             }
             else
             {
-
+                Pause();
             }
         }
+    }
+
+    public void UnPause()
+    {
+        currentState = previousState;
+        HideTutorial();
+        Time.timeScale = 1f;
+        pauseMenu.SetActive(false);
+    }
+    public void Pause()
+    {
+        previousState = currentState;
+        HideTutorial();
+        currentState = GameState.Pause;
+        Time.timeScale = 0;
+        pauseMenu.SetActive(true);
+    }
+
+    public void Restart()
+    {
+        //reload scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void ShowTutorial()
+    {
+        tutorialObj.SetActive(true);
+    }
+
+    public void HideTutorial()
+    {
+        tutorialObj.SetActive(false);
+    }
+
+    public void Quit()
+    {
+        //quit to scene 0
+        SceneManager.LoadScene(0);
     }
 
     public void ActivateKillCam()
