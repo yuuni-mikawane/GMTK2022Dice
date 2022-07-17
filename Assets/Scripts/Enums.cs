@@ -10,6 +10,7 @@ public enum IngameAttribute
 public enum LayerIngame
 {
     Enemy = 6,
+    KillHitbox = 9,
 }
 
 public enum GameState
@@ -18,5 +19,4 @@ public enum GameState
     Playing,
     SettingUp,
     GameOver,
-    GameCompleted,
 }

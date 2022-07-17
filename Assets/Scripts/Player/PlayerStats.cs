@@ -13,13 +13,17 @@ public class PlayerStats : SingletonBind<PlayerStats>
     public float damage = 1;
     public int currentDiceValue;
 
+    public AudioSource hurtFX;
+
     public TMP_Text hpText;
+    private Color originalHpTextColor;
     private Animator animator;
     private GameController gameController;
     private AttributeManager attributeManager;
 
     private void Start()
     {
+        originalHpTextColor = hpText.color;
         hp = maxHp;
         currentDiceValue = Random.Range(1, 7);
         animator = GetComponent<Animator>();
@@ -40,7 +44,7 @@ public class PlayerStats : SingletonBind<PlayerStats>
 
         if (gameController.currentState == GameState.Playing)
         {
-            hpText.text = "HP " + ((int)hp).ToString();
+            hpText.text = ((int)hp).ToString() + "HP";
             hpText.gameObject.SetActive(true);
         }
         else
@@ -54,11 +58,16 @@ public class PlayerStats : SingletonBind<PlayerStats>
         if (!isRolling)
         {
             hp -= amount;
+            hurtFX.Play();
             if (hp <= 0)
             {
                 hp = 0;
                 //die
                 gameController.GameOver();
+            }
+            else
+            {
+                StartCoroutine(TakeDamageTick());
             }
         }
     }
@@ -76,5 +85,12 @@ public class PlayerStats : SingletonBind<PlayerStats>
         {
             attributeManager.UpdateCurrentAttributes(currentDiceValue);
         }
+    }
+
+    IEnumerator TakeDamageTick()
+    {
+        hpText.color = Color.red;
+        yield return new WaitForSecondsRealtime(0.2f);
+        hpText.color = originalHpTextColor;
     }
 }

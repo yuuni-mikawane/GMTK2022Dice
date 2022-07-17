@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4647128451916827754}
   - component: {fileID: 4647128451916827755}
+  - component: {fileID: 7829395610366856308}
   m_Layer: 6
   m_Name: sprite
   m_TagString: Untagged
@@ -82,6 +83,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7829395610366856308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4647128451916827752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ce213b0a3c1bed4688f9ef26777f670, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 21300000, guid: ad19d20fa951ff546bde4df192d7dd52, type: 3}
+  - {fileID: 21300000, guid: 1f57ee146c4d7114e90068dd9f256fb5, type: 3}
+  - {fileID: 21300000, guid: fb594a643ffef0445a6c310d7e7ba4bc, type: 3}
 --- !u!1 &4647128453176528618
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,6 +154,7 @@ MonoBehaviour:
   attackPos: {fileID: 4647128453383897869}
   bullet: {fileID: 2796123632002233898, guid: 41b57694c8412f740a87a47c3e8ba4dc, type: 3}
   dieFX: {fileID: 6587070090975095721, guid: de454de70ff78bd43922adea6db77858, type: 3}
+  dieSFX: {fileID: 0}
 --- !u!50 &4647128453176528622
 Rigidbody2D:
   serializedVersion: 4

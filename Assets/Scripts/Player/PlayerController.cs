@@ -21,6 +21,8 @@ namespace TarodevController {
         public bool Grounded => _colDown;
         public SpriteRenderer sprite;
         public GameObject killHitbox;
+        public AudioSource rollSFX;
+        public AudioSource jumpSFX;
         private GameController gameController;
 
         private Animator animator;
@@ -65,24 +67,18 @@ namespace TarodevController {
 
         private void AnimStateCheck()
         {
+            if (_currentHorizontalSpeed > 0)
+            {
+                sprite.flipX = true;
+            }
+            else if (_currentHorizontalSpeed < 0)
+            {
+                sprite.flipX = false;
+            }
+
             if (!isRolling)
             {
-                if (_currentHorizontalSpeed > 0)
-                {
-                    sprite.flipX = true;
-                    //animator.SetBool("isIdle", false);
-                    animator.SetBool("isIdle", true);
-                }
-                else if (_currentHorizontalSpeed < 0)
-                {
-                    sprite.flipX = false;
-                    //animator.SetBool("isIdle", false);
-                    animator.SetBool("isIdle", true);
-                }
-                else
-                {
-                    animator.SetBool("isIdle", true);
-                }
+                animator.SetBool("isIdle", true);
             }
         }
 
@@ -115,6 +111,7 @@ namespace TarodevController {
             isRolling = true;
             playerStats.RollDiceValue();
             //rolling anim
+            rollSFX.Play();
             animator.SetTrigger("rollTrigger");
             animator.SetBool("isIdle", false);
             sprite.color = new Color(0, 149, 255);
@@ -313,6 +310,7 @@ namespace TarodevController {
         private void CalculateJump() {
             // Jump if: grounded or within coyote threshold || sufficient jump buffer
             if (Input.JumpDown && CanUseCoyote || HasBufferedJump) {
+                jumpSFX.Play();
                 _currentVerticalSpeed = _jumpHeight;
                 _endedJumpEarly = false;
                 _coyoteUsable = false;

@@ -37,6 +37,21 @@ public class GameController : SingletonBind<GameController>
         attributeManager = AttributeManager.Instance;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (currentState == GameState.Pause)
+            {
+                
+            }
+            else
+            {
+
+            }
+        }
+    }
+
     public void ActivateKillCam()
     {
         StartCoroutine(KillCam(killCamSlowMoTime, slowTo));
